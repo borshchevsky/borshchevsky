@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'main.apps.MainConfig'
+    'main.apps.MainConfig',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
