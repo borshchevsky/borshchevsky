@@ -22,6 +22,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     seller = models.ManyToManyField(Seller)
     title = models.CharField(max_length=255)
+    description = models.TextField(default='description')  # add null=True later
     width = models.IntegerField(null=True)
     height = models.IntegerField(null=True)
     depth = models.IntegerField(null=True)
