@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Product list{% endblock %}
+
+{% block content %}
+<h2>Product list</h2><br>
+{% if product_list %}
+    <ul>
+        {% for product in product_list %}
+            <li><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    It's empty here.
+{% endif %}
+{% endblock %}

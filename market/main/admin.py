@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin
 
+from .models import Category, Product
+
 
 class FlatPageAdminNew(FlatPageAdmin):
     formfield_overrides = {
@@ -13,3 +15,13 @@ class FlatPageAdminNew(FlatPageAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdminNew)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    ...
