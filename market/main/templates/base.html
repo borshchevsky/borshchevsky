@@ -35,8 +35,47 @@
     <title>{% block title %}Market{% endblock %}</title>
 </head>
 <body>
+
 {% include 'navbar.html' %}
-{% block content %}
+
+{% block content %}{% endblock %}
+
+{% block pagination %}
+{% if is_paginated %}
+    {% if tag %}
+        <div style="width:100px;margin:0 auto;" class="center">
+          <div style="position:absolute;bottom:50px" class="pagination">
+              <span class="page-links">
+                  {% if page_obj.has_previous %}
+                      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&tag={{ tag }}">Previous</a>
+                  {% endif %}
+                  <span class="page-current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                  </span>
+                  {% if page_obj.has_next %}
+                      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}&tag={{ tag }}">Next</a>
+                  {% endif %}
+              </span>
+          </div>
+        </div>
+    {% else %}
+        <div style="width:100px;margin:0 auto;" class="center">
+          <div style="position:absolute;bottom:50px" class="pagination">
+              <span class="page-links">
+                  {% if page_obj.has_previous %}
+                      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
+                  {% endif %}
+                  <span class="page-current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                  </span>
+                  {% if page_obj.has_next %}
+                      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a>
+                  {% endif %}
+              </span>
+          </div>
+        </div>
+    {% endif %}
+{% endif %}
 {% endblock %}
 </body>
 </html>

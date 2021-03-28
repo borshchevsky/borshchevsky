@@ -24,6 +24,7 @@ class Seller(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    tags = models.ManyToManyField('Tag')
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)  # add null=True later
     width = models.IntegerField(null=True, blank=True)
@@ -37,6 +38,9 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product-detail', args=[str(self.id)])
 
+    def get_tags(self):
+        return {tag.tag_name for tag in self.tags.all()}
+
 
 class ProductInstance(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -46,3 +50,10 @@ class ProductInstance(models.Model):
 
     def __str__(self):
         return f'{self.product.title}'
+
+
+class Tag(models.Model):
+    tag_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.tag_name}'

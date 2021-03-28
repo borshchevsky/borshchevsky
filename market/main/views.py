@@ -15,6 +15,20 @@ def index(request):
 
 class ProductListView(ListView):
     model = Product
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        tag = self.request.GET.get('tag')
+        if tag:
+            return queryset.filter(tags__tag_name=tag)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data()
+        tag = self.request.GET.get('tag')
+        data['tag'] = tag
+        return data
 
 
 class ProductDetailView(DetailView):

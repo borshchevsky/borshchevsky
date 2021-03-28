@@ -4,12 +4,31 @@
 
 {% block content %}
 <h2>Product list</h2><br>
+
 {% if product_list %}
-    <ul>
-        {% for product in product_list %}
-            <li><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></li>
-        {% endfor %}
-    </ul>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Tags</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in product_list %}
+        <tr>
+            <td>
+                <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+            </td>
+            <td>
+                {% for tag in product.get_tags %}
+                    <a href="{% url 'goods' %}?tag={{ tag }}">{{ tag }}</a>
+                {% endfor %}
+                <br>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% else %}
     It's empty here.
 {% endif %}
