@@ -1,4 +1,4 @@
-from market.main.models import Category, Product, Seller
+from market.main.models import Category, Product
 
 Category.objects.create(title='smartphones')
 Category.objects.create(title='tv')
