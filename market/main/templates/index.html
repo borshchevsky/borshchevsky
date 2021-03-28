@@ -3,10 +3,11 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
+{% include 'navbar.html' %}
 
 {% if turn_on_block %}
     <div class="starter-template">
-        <h1>Current user: {{ user.get_username }}</h1>
+        <h1>Hello</h1>
     </div>
 {% endif %}
 
