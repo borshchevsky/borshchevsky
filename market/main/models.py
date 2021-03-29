@@ -1,11 +1,15 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Category(models.Model):
     title = models.CharField(max_length=255, unique=True)
 
-    def __repr__(self):
-        return f'{self.__class__.__name__}({self.title})'
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = 'categories'
 
 
 class Seller(models.Model):
@@ -14,21 +18,24 @@ class Seller(models.Model):
     address = models.CharField(max_length=255, null=True)
     website = models.CharField(max_length=255, null=True)
 
-    def __repr__(self):
-        return f'{self.__class__.__name__}{self.first_name, self.last_name}'
+    def __str__(self):
+        return f'{self.first_name, self.last_name}'
 
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=255)
-    description = models.TextField(default='description')  # add null=True later
-    width = models.IntegerField(null=True)
-    height = models.IntegerField(null=True)
-    depth = models.IntegerField(null=True)
-    weight = models.IntegerField(null=True)
+    description = models.TextField(null=True, blank=True)  # add null=True later
+    width = models.IntegerField(null=True, blank=True)
+    height = models.IntegerField(null=True, blank=True)
+    depth = models.IntegerField(null=True, blank=True)
+    weight = models.IntegerField(null=True, blank=True)
 
-    def __repr__(self):
-        return f'{self.__class__.__name__}({self.title})'
+    def __str__(self):
+        return f'{self.title}'
+
+    def get_absolute_url(self):
+        return reverse('product-detail', args=[str(self.id)])
 
 
 class ProductInstance(models.Model):
@@ -37,6 +44,5 @@ class ProductInstance(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.IntegerField(null=True)
 
-    def __repr__(self):
-        return f'{self.__class__.__name__}{self.product.title, self.price}'
-
+    def __str__(self):
+        return f'{self.product.title}'
