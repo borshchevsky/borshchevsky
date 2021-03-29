@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin
 
-from .models import Category, Product, Tag
+from .models import Category, Product, Tag, Profile
 
 
 class FlatPageAdminNew(FlatPageAdmin):
@@ -31,3 +31,9 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     ...
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    ...
+

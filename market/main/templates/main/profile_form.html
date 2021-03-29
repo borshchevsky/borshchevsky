@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'messages.html' %}
+
+<br>
+<strong>User: </strong> {{ user }}
+<hr>
+<form action="/user_update/" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+{% endblock %}
