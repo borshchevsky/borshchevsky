@@ -1,9 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView, UpdateView
 
 from .forms import ProfileForm
-from .models import Product, Profile
+from .models import Product
 
 
 def index(request):
@@ -38,18 +39,13 @@ class ProductDetailView(DetailView):
 
 
 class ProfileUpdate(UpdateView):
-    model = Profile
+    model = User
     form_class = ProfileForm
 
     def get_object(self, queryset=None):
         return super().get_queryset().get(username=self.request.user)
 
-
-def update_profile(request):
-    user = Profile.objects.get(username=request.user)
-    user.first_name = request.POST.get('first_name')
-    user.last_name = request.POST.get('last_name')
-    user.email = request.POST.get('email')
-    user.save()
-    messages.success(request, "User profile has been updated.")
-    return redirect('profile-update')
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "User profile has been updated.")
+        return redirect('profile-update')

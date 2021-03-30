@@ -7,7 +7,7 @@
 <br>
 <strong>User: </strong> {{ user }}
 <hr>
-<form action="/user_update/" method="POST">
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <br>
