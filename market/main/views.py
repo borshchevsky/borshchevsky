@@ -1,10 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView, UpdateView
 
 from .forms import ProfileForm
-from .models import Product
+from .models import Product, Profile
 
 
 def index(request):
@@ -39,7 +38,7 @@ class ProductDetailView(DetailView):
 
 
 class ProfileUpdate(UpdateView):
-    model = User
+    model = Profile
     form_class = ProfileForm
 
     def get_object(self, queryset=None):
