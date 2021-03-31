@@ -42,7 +42,7 @@ class ProfileUpdate(UpdateView):
     form_class = ProfileForm
 
     def get_object(self, queryset=None):
-        return super().get_queryset().get(username=self.request.user)
+        return super().get_queryset().get(email=self.request.user.email)
 
     def form_valid(self, form):
         form.save()
