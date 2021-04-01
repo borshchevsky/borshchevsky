@@ -85,4 +85,3 @@ class UpdateProduct(UpdateView):
     model = Product
     fields = '__all__'
     template_name_suffix = '_update_form'
-

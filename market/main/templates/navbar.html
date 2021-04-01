@@ -1,3 +1,5 @@
+{% load thumbnail %}
+
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -16,7 +18,18 @@
                 {% endfor %}
                 {% if user.is_authenticated %}
                     <li class="nabvar-item">
-                         <strong><a class="nav-link" href="{% url 'profile-update' %}">{{ user.get_username }}</a></strong>
+                        <div class="container">
+                            <div class="row justify-content-start" style="align-items:center">
+                                <div class="col-1">
+                                    {% thumbnail user.profile.avatar "30x30" crop="center" as im %}
+                                        <a href="{% url 'profile-update' %}" ><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+                                    {% endthumbnail %}
+                                </div>
+                                <div class="col-sm">
+                                    <strong><a class="nav-link" href="{% url 'profile-update' %}">{{ user.get_username }}</a></strong>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 {% endif %}
             </ul>
