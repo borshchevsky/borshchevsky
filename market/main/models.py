@@ -28,7 +28,7 @@ class Seller(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    tags = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag', blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)  # add null=True later
     width = models.IntegerField(null=True, blank=True)

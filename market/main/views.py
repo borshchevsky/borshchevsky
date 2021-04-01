@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from .forms import UserForm, ProfileFormSet
 from .models import Product
@@ -73,3 +73,16 @@ class ProfileUpdate(UpdateView):
             return render(request, self.template_name, {'form': form, 'profile_form': profile_form})
         else:
             return self.form_invalid(form)
+
+
+class CreateProduct(CreateView):
+    model = Product
+    fields = '__all__'
+    template_name_suffix = '_create_form'
+
+
+class UpdateProduct(UpdateView):
+    model = Product
+    fields = '__all__'
+    template_name_suffix = '_update_form'
+
