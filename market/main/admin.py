@@ -31,7 +31,8 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     ...
-#
-# @admin.register(Profile)
-# class ProfileAdmin(admin.ModelAdmin):
-#     ...
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    ...
