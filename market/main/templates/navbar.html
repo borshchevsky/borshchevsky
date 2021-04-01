@@ -14,9 +14,11 @@
                     <a class="nav-link" href="{{ page.url }}">{{ page.title }}</a>
                 </li>
                 {% endfor %}
-                <li class="navbar-text">
-                   User: {{ user.get_username }}
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nabvar-item">
+                         <strong><a class="nav-link" href="{% url 'profile-update' %}">{{ user.get_username }}</a></strong>
+                    </li>
+                {% endif %}
             </ul>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
