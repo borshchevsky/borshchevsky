@@ -61,6 +61,4 @@ class Tag(models.Model):
 
 
 class Profile(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
