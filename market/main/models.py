@@ -35,6 +35,7 @@ class Product(models.Model):
     height = models.IntegerField(null=True, blank=True)
     depth = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.title}'
@@ -66,6 +67,7 @@ class Tag(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth_date = models.DateField(validators=[validate_age], default=timezone.now().date())
+    avatar = models.ImageField(null=True, blank=True, upload_to='avatars/')
 
     def __str__(self):
         return self.user.username
