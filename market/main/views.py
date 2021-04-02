@@ -1,11 +1,10 @@
-from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView, UpdateView
 
-from .forms import ProfileForm, UserForm, ProfileFormSet
-from .models import Product, Profile
+from .forms import UserForm, ProfileFormSet
+from .models import Product
 
 
 def index(request):
@@ -71,6 +70,6 @@ class ProfileUpdate(UpdateView):
         form = self.get_form()
         profile_form = ProfileFormSet(self.request.POST, self.request.FILES, instance=self.object)
         if form.is_valid():
-            return self.form_valid_formset(form, profile_form)
+            return render(request, self.template_name, {'form': form, 'profile_form': profile_form})
         else:
             return self.form_invalid(form)
