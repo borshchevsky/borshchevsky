@@ -4,9 +4,7 @@
 
 {% include 'messages.html' %}
 
-<br>
-<strong>User: </strong> {{ user }}
-<hr>
+
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
