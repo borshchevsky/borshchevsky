@@ -13,5 +13,4 @@ urlpatterns = [
                        name='profile-update'),
                   path('goods/add', views.CreateProduct.as_view()),
                   path('goods/<int:pk>/edit', views.UpdateProduct.as_view()),
-                  path('accounts/', include('django.contrib.auth.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

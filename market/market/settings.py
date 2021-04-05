@@ -39,6 +39,10 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'sorl.thumbnail',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +131,21 @@ STATICFILES_URL = (
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '651652532870-fl2vaqm358v2qnmcjqnf9lkolfbm9du1.apps.googleusercontent.com',
+            'secret': '-jCDfIb9yQkugSnCwo71HA5e',
+            'key': ''
+        }
+    }
+}
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
