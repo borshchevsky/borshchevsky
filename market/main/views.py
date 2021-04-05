@@ -85,3 +85,12 @@ class UpdateProduct(UpdateView):
     model = Product
     fields = '__all__'
     template_name_suffix = '_update_form'
+
+
+def login(request):
+    turn_on_block = True
+    greeting = 'Hello'
+    return render(request, 'index.html', {
+        'turn_on_block': turn_on_block,
+        'greeting': greeting,
+    })
