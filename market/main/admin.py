@@ -15,24 +15,7 @@ class FlatPageAdminNew(FlatPageAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdminNew)
-
-
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category')
-    ordering = ['id']
-
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    ...
-
-
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    ...
-
-
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    ...
+admin.site.register(Product)
+admin.site.register(Category)
+admin.site.register(Tag)
+admin.site.register(Profile)
