@@ -1,10 +1,13 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
+from market.settings import DEFAULT_GROUP_NAME
 from .forms import UserForm, ProfileFormSet
-from .models import Product
+from .models import Product, Profile
 
 
 def index(request):
@@ -95,3 +98,12 @@ def login(request):
         'turn_on_block': turn_on_block,
         'greeting': greeting,
     })
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        if not Group.objects.filter(name=DEFAULT_GROUP_NAME):
+            Group.objects.create(name=DEFAULT_GROUP_NAME)
+        instance.groups.add(Group.objects.get(name=DEFAULT_GROUP_NAME))
+        Profile.objects.create(user=User.objects.get(username=instance))
