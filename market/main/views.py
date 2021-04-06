@@ -97,3 +97,4 @@ def create_user_profile(sender, instance, created, **kwargs):
             Group.objects.create(name=DEFAULT_GROUP_NAME)
         instance.groups.add(Group.objects.get(name=DEFAULT_GROUP_NAME))
         Profile.objects.create(user=User.objects.get(username=instance))
+
