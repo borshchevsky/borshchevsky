@@ -70,7 +70,8 @@ class ProfileUpdate(UpdateView):
         form = self.get_form()
         profile_form = ProfileFormSet(self.request.POST, self.request.FILES, instance=self.object)
         if form.is_valid():
-            return render(request, self.template_name, {'form': form, 'profile_form': profile_form})
+
+            return self.form_valid_formset(form, profile_form)
         else:
             return self.form_invalid(form)
 
