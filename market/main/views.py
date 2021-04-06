@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from market.settings import DEFAULT_GROUP_NAME
@@ -73,7 +73,6 @@ class ProfileUpdate(UpdateView):
         form = self.get_form()
         profile_form = ProfileFormSet(self.request.POST, self.request.FILES, instance=self.object)
         if form.is_valid():
-
             return self.form_valid_formset(form, profile_form)
         else:
             return self.form_invalid(form)
@@ -89,15 +88,6 @@ class UpdateProduct(UpdateView):
     model = Product
     fields = '__all__'
     template_name_suffix = '_update_form'
-
-
-def login(request):
-    turn_on_block = True
-    greeting = 'Hello'
-    return render(request, 'index.html', {
-        'turn_on_block': turn_on_block,
-        'greeting': greeting,
-    })
 
 
 @receiver(post_save, sender=User)
