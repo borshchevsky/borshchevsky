@@ -17,19 +17,21 @@
                 </li>
                 {% endfor %}
                 {% if user.is_authenticated %}
-                    <li class="nabvar-item">
-                        <div class="container">
-                            <div class="row justify-content-start" style="align-items:center">
-                                <div class="col-1">
-                                    {% thumbnail user.profile.avatar "30x30" crop="center" as im %}
-                                        <a href="{% url 'profile-update' %}" ><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
-                                    {% endthumbnail %}
-                                </div>
-                                <div class="col-sm">
-                                    <strong><a class="nav-link" href="{% url 'profile-update' %}">{{ user.get_username }}</a></strong>
-                                </div>
-                            </div>
-                        </div>
+                    <li class="nav-item">
+                        {% thumbnail user.profile.avatar "30x30" crop="center" as im %}
+                            <a href="{% url 'profile-update' %}" ><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+                        {% endthumbnail %}</li>
+                        <li class="nav-item">
+                            <strong><a class="nav-link" href="{% url 'profile-update' %}">{{ user.get_username }}</a></strong>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">Sign Out</a>
+                        </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                     </li>
                 {% endif %}
             </ul>
