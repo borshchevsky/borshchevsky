@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Group
+from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
@@ -6,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from market.settings import DEFAULT_GROUP_NAME
+from . import email_messages
 from .forms import UserForm, ProfileFormSet
 from .models import Product, Profile
 
@@ -91,10 +93,19 @@ class UpdateProduct(UpdateView):
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def get_or_create(sender, instance, created, **kwargs):
     if created:
         if not Group.objects.filter(name=DEFAULT_GROUP_NAME):
             Group.objects.create(name=DEFAULT_GROUP_NAME)
         instance.groups.add(Group.objects.get(name=DEFAULT_GROUP_NAME))
         Profile.objects.create(user=User.objects.get(username=instance))
 
+        if instance.email:
+            send_mail(
+                subject='Welcome.',
+                message='Hello.',
+                from_email='admin@example.com',
+                recipient_list=[instance.email],
+                fail_silently=False,
+                html_message=email_messages.welcome
+            )
