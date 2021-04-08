@@ -150,3 +150,5 @@ SOCIALACCOUNT_PROVIDERS = {
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 DEFAULT_GROUP_NAME = 'common users'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
