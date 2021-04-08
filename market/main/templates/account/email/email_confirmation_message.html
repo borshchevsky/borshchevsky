@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% block title %}Email confirmed.{% endblock %}
-<h3>Thank you for email confirmation.</h3>
+<h3>Email confirmation.</h3>
 <hr>
-<a href="{% url 'index' %}">Homepage.</a>
+You need to confirm your email address to complete your registration.<br>
+To confirm you email <a href="{{request.build_absolute_uri}}">click here</a>.
