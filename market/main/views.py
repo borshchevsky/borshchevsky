@@ -3,13 +3,13 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from market.settings import DEFAULT_GROUP_NAME
 from . import email_messages
 from .forms import UserForm, ProfileFormSet
-from .models import Product, Profile
+from .models import Product, Profile, Subscriber
 
 
 def index(request):
@@ -108,3 +108,24 @@ def create_user_profile(sender, instance, created, **kwargs):
                 fail_silently=False,
                 html_message=email_messages.welcome
             )
+
+
+@receiver(post_save, sender=Product)
+def send_novelty(instance, **kwargs):
+    message = f'''
+    <h3>A new good arrived.</h3>
+    You received this message because you have subscribed for information about new goods.
+    <br>
+    We just got a new {instance.title} supply! You can see detail information about this one here:<br>
+    <a href="http://127.0.0.1:8000/goods/{instance.id}>{instance.title}</a>
+    '''
+
+    mail_list = {sub.user.email for sub in Subscriber.objects.all() if sub.user.email}
+    send_mail(
+        subject='A new good has just arrived.',
+        message='Hello.',
+        from_email='admin@example.com',
+        recipient_list=mail_list,
+        fail_silently=False,
+        html_message=message
+    )

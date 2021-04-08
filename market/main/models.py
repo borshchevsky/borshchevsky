@@ -29,6 +29,7 @@ class Seller(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     tags = models.ManyToManyField('Tag', blank=True)
+
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     width = models.IntegerField(null=True, blank=True)
@@ -68,6 +69,13 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth_date = models.DateField(validators=[validate_age], default=timezone.now().date())
     avatar = models.ImageField(null=True, blank=True, upload_to='avatars/')
+
+    def __str__(self):
+        return self.user.username
+
+
+class Subscriber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
