@@ -15,8 +15,12 @@ class FlatPageAdminNew(FlatPageAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdminNew)
-admin.site.register(Product)
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Profile)
 admin.site.register(Subscriber)
+
+
+@admin.register(Product)
+class Product(admin.ModelAdmin):
+    list_display = ('title', 'date_created')
