@@ -93,10 +93,9 @@ class UpdateProduct(UpdateView):
 
 
 @receiver(post_save, sender=User)
-def get_or_create(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        if not Group.objects.filter(name=DEFAULT_GROUP_NAME):
-            Group.objects.create(name=DEFAULT_GROUP_NAME)
+        Group.objects.get_or_create(name=DEFAULT_GROUP_NAME)
         instance.groups.add(Group.objects.get(name=DEFAULT_GROUP_NAME))
         Profile.objects.create(user=User.objects.get(username=instance))
 

@@ -3,13 +3,12 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-{% load market_extras %}
+    {% load market_extras %}
 
-{% if turn_on_block %}
-    <div class="starter-template">
-        <h1>{{ greeting|reverse }}</h1><br>
-        Time: {% now "H:i:s" %}
-    </div>
-{% endif %}
-
+    {% if turn_on_block %}
+        <div class="starter-template">
+            <h1>{{ greeting|reverse }}</h1><br>
+            Time: {% now "H:i:s" %}
+        </div>
+    {% endif %}
 {% endblock %}

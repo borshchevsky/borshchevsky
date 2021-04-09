@@ -147,7 +147,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # change to 'mandatory'
 
 DEFAULT_GROUP_NAME = 'common users'
 
