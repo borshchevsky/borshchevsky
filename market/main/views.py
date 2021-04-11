@@ -1,9 +1,13 @@
+from datetime import timedelta
+
+from apscheduler.schedulers.background import BackgroundScheduler
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from market.settings import DEFAULT_GROUP_NAME
@@ -82,7 +86,7 @@ class ProfileUpdate(UpdateView):
 
 class CreateProduct(CreateView):
     model = Product
-    fields = '__all__'
+    fields = ['category', 'tags', 'title', 'description', 'width', 'height', 'depth', 'weight', 'image']
     template_name_suffix = '_create_form'
 
 
@@ -116,7 +120,8 @@ def send_novelty(instance, **kwargs):
     <h3>A new good arrived.</h3>
     You received this message because you have subscribed for information about new goods.
     <br>
-    We just got a new {instance.title} supply! You can see detail information about this one here:<br>
+    We just got a new {instance.title} supply! You can see the detail information about this one here:
+    <br>
     <a href="http://127.0.0.1:8000/goods/{instance.id}>{instance.title}</a>
     '''
 
@@ -129,3 +134,30 @@ def send_novelty(instance, **kwargs):
         fail_silently=False,
         html_message=message
     )
+
+
+def send_novelty_weekly():
+    now = timezone.now().date()
+    week_ago = now - timedelta(7)
+    novelty_count = len(Product.objects.filter(date_created__range=[week_ago, now]))
+
+    message = f'''
+        <h3>We have some novelties.</h3>
+        You received this message because you have subscribed for information about new goods.
+        <br>
+        We got {novelty_count} novelties last week! Take a look!
+        '''
+    mail_list = {sub.user.email for sub in Subscriber.objects.all() if sub.user.email}
+    send_mail(
+        subject='A new good has just arrived.',
+        message='Hello.',
+        from_email='admin@example.com',
+        recipient_list=mail_list,
+        fail_silently=False,
+        html_message=message
+    )
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(send_novelty_weekly, 'interval', seconds=10)
+scheduler.start()

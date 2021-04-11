@@ -37,6 +37,7 @@ class Product(models.Model):
     depth = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
+    date_created = models.DateField(default=timezone.now().date())
 
     def __str__(self):
         return f'{self.title}'
