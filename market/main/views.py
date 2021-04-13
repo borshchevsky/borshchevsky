@@ -15,6 +15,7 @@ from market.settings import DEFAULT_GROUP_NAME
 from . import email_messages
 from .forms import UserForm, ProfileFormSet
 from .models import Product, Profile, Subscriber
+from .tasks import send_novelty_task
 
 
 def index(request):
@@ -117,21 +118,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Product)
 def send_novelty(instance, **kwargs):
-    message = f'''
-    <h3>A new good arrived.</h3>
-    You received this message because you have subscribed for information about new goods.
-    <br>
-    We just got a new {instance.title} supply! You can see the detail information about this one here:
-    <br>
-    <a href="http://127.0.0.1:8000/goods/{instance.id}>{instance.title}</a>
-    '''
-
-    mail_list = {sub.user.email for sub in Subscriber.objects.all() if sub.user.email}
-    send_mail(
-        subject='A new good has just arrived.',
-        message='Hello.',
-        from_email='admin@example.com',
-        recipient_list=mail_list,
-        fail_silently=False,
-        html_message=message
-    )
+    send_novelty_task.delay(instance.id)
