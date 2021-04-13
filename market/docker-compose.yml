@@ -20,7 +20,7 @@ services:
   celery:
     build: .
     container_name: 'market_celery'
-    command: celery -A market worker -B
+    command: celery -A market worker -B -E
     volumes:
       - .:/code
     links:
