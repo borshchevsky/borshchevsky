@@ -10,6 +10,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
+from market.celery import celery_app
 from market.settings import DEFAULT_GROUP_NAME
 from . import email_messages
 from .forms import UserForm, ProfileFormSet
@@ -156,8 +157,3 @@ def send_novelty_weekly():
         fail_silently=False,
         html_message=message
     )
-
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(send_novelty_weekly, 'interval', seconds=10)
-scheduler.start()

@@ -153,3 +153,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'  # change to 'mandatory'
 DEFAULT_GROUP_NAME = 'common users'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CELERY_BROKER_URL = 'redis://market_redis:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
