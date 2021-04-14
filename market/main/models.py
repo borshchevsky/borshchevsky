@@ -69,6 +69,7 @@ class Tag(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth_date = models.DateField(validators=[validate_age], default=timezone.now().date())
+    phone_number = models.CharField(max_length=15, null=True)
     avatar = models.ImageField(null=True, blank=True, upload_to='avatars/')
 
     def __str__(self):
@@ -77,6 +78,15 @@ class Profile(models.Model):
 
 class Subscriber(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+
+class SMSLog(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    code = models.IntegerField()
+    server_response = models.TextField(null=True)
 
     def __str__(self):
         return self.user.username

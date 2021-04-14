@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-
 from .models import Profile
 
 
@@ -31,11 +30,15 @@ class UserForm(forms.ModelForm):
         }
 
 
-ProfileFormSet = forms.inlineformset_factory(User, Profile, fields=('birth_date',),
+ProfileFormSet = forms.inlineformset_factory(User, Profile, fields=('birth_date', 'phone_number'),
                                              can_delete=False,
                                              widgets={
                                                  'birth_date': forms.DateInput(attrs={
                                                      'type': 'date',
+                                                     'class': 'form-control',
+                                                     'style': 'width:10%',
+                                                 }),
+                                                 'phone_number': forms.TextInput(attrs={
                                                      'class': 'form-control',
                                                      'style': 'width:10%',
                                                  }),

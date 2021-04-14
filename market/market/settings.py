@@ -156,3 +156,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CELERY_BROKER_URL = 'redis://market_redis:6379'
 
+VONAGE_API_KEY = '16ac57d3'
+VONAGE_SECRET = '6nNzfWRGRUG5f4Q8'
