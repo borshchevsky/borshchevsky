@@ -1,21 +1,19 @@
-from datetime import timedelta
-
-from apscheduler.schedulers.background import BackgroundScheduler
+from django.contrib import messages
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.utils import timezone
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
-from market.celery import celery_app
 from market.settings import DEFAULT_GROUP_NAME
 from . import email_messages
 from .forms import UserForm, ProfileFormSet
-from .models import Product, Profile, Subscriber
+from .models import Product, Profile, SMSLog
 from .tasks import send_novelty_task
+from .utils import send_sms
 
 
 def index(request):
@@ -77,6 +75,8 @@ class ProfileUpdate(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def post(self, request, *args, **kwargs):
+        if request.POST.get('verify'):
+            self._verify_number(request)
         self.object = self.get_object(request)
         form = self.get_form()
         profile_form = ProfileFormSet(self.request.POST, self.request.FILES, instance=self.object)
@@ -84,6 +84,20 @@ class ProfileUpdate(UpdateView):
             return self.form_valid_formset(form, profile_form)
         else:
             return self.form_invalid(form)
+
+    def _verify_number(self, request):
+        user = User.objects.get(username=request.user.username)
+        profile = Profile.objects.get(user=user)
+        phone_number = profile.phone_number
+        if phone_number:
+            code = send_sms(phone_number)
+            messages.success(request, 'A message with a verification code has been sent to your phone number.')
+            try:
+                code_query = SMSLog.objects.get(user=user)
+                code_query.delete()
+                SMSLog.objects.create(user=user, code=code)
+            except ObjectDoesNotExist:
+                SMSLog.objects.create(user=user, code=code)
 
 
 class CreateProduct(CreateView):
