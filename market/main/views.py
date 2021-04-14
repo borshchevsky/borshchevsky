@@ -90,14 +90,13 @@ class ProfileUpdate(UpdateView):
         profile = Profile.objects.get(user=user)
         phone_number = profile.phone_number
         if phone_number:
-            code = send_sms(phone_number)
+            code, response_data = send_sms(phone_number)
             messages.success(request, 'A message with a verification code has been sent to your phone number.')
             try:
                 code_query = SMSLog.objects.get(user=user)
                 code_query.delete()
-                SMSLog.objects.create(user=user, code=code)
-            except ObjectDoesNotExist:
-                SMSLog.objects.create(user=user, code=code)
+            finally:
+                SMSLog.objects.create(user=user, code=code, server_response=response_data)
 
 
 class CreateProduct(CreateView):

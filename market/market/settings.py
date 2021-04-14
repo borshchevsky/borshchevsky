@@ -156,5 +156,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CELERY_BROKER_URL = 'redis://market_redis:6379'
 
-MAINSMS_PROJECT_NAME = 'django_market'
-MAINSMS_API_KEY = '153bf61197f3fa5353921ee5c9379c1b'
+VONAGE_API_KEY = '16ac57d3'
+VONAGE_SECRET = '6nNzfWRGRUG5f4Q8'

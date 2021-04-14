@@ -86,6 +86,7 @@ class Subscriber(models.Model):
 class SMSLog(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     code = models.IntegerField()
+    server_response = models.TextField(null=True)
 
     def __str__(self):
         return self.user.username

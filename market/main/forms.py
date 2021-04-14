@@ -1,7 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-from .mainsms import SMS
-from market.settings import MAINSMS_PROJECT_NAME, MAINSMS_API_KEY
 from .models import Profile
 
 
