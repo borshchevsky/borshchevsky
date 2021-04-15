@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
+from market import keys
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
@@ -17,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*aq@ubt%(6m0pw23l=cf+u$z)wf%a-j6zmt&9#zlf5idae^9#n'
+SECRET_KEY = keys.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -138,15 +140,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '651652532870-fl2vaqm358v2qnmcjqnf9lkolfbm9du1.apps.googleusercontent.com',
-            'secret': '-jCDfIb9yQkugSnCwo71HA5e',
-            'key': ''
-        }
-    }
-}
+SOCIALACCOUNT_PROVIDERS = keys.SOCIALACCOUNT_PROVIDERS
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # change to 'mandatory'
 
@@ -156,8 +150,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CELERY_BROKER_URL = 'redis://market_redis:6379'
 
-VONAGE_API_KEY = '16ac57d3'
-VONAGE_SECRET = '6nNzfWRGRUG5f4Q8'
+VONAGE_API_KEY = keys.VONAGE_API_KEY
+VONAGE_SECRET = keys.VONAGE_SECRET
 
 CACHES = {
     'default': {
