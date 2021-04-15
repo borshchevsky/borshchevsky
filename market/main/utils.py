@@ -19,4 +19,4 @@ def send_sms(phone_number):
 
 
 def generate_code():
-    return randint(1000, 9999)
+    return str(randint(1000, 9999)).zfill(4)
