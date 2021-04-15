@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
+from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -44,9 +45,18 @@ class ProductListView(ListView):
         return data
 
 
-@method_decorator(cache_page(15), name='dispatch')
 class ProductDetailView(DetailView):
     model = Product
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        page_id_views = f'{context["product"].id}_views'
+        current_page_views = cache.get(page_id_views, 0)
+        current_page_views += 1
+        cache.set(page_id_views, current_page_views, timeout=60)
+        context['page_views'] = current_page_views
+        return self.render_to_response(context)
 
 
 class ProfileUpdate(UpdateView):
