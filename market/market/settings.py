@@ -158,3 +158,13 @@ CELERY_BROKER_URL = 'redis://market_redis:6379'
 
 VONAGE_API_KEY = '16ac57d3'
 VONAGE_SECRET = '6nNzfWRGRUG5f4Q8'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://market_redis:6379',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}

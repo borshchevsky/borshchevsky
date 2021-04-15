@@ -18,6 +18,7 @@ django-allauth==0.44.0
 django-apscheduler==0.5.2
 django-ckeditor==6.0.0
 django-js-asset==1.2.2
+django-redis==4.12.1
 idna==2.10
 kombu==5.0.2
 oauthlib==3.1.0
