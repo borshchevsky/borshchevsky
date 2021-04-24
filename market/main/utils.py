@@ -6,6 +6,8 @@ from market.settings import VONAGE_API_KEY, VONAGE_SECRET
 
 
 def send_sms(phone_number):
+    """Sends SMS via Vonage sms-service.
+    """
     client = vonage.Client(key=VONAGE_API_KEY, secret=VONAGE_SECRET)
     sms = vonage.Sms(client)
     code = generate_code()
@@ -19,4 +21,7 @@ def send_sms(phone_number):
 
 
 def generate_code():
+    """Returns random 4-digit code.
+    """
+
     return str(randint(1000, 9999)).zfill(4)
