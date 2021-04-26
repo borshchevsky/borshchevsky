@@ -6,8 +6,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from market.settings import DEFAULT_GROUP_NAME
