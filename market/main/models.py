@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.http.response import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 
@@ -42,10 +43,10 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.title}'
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse('product-detail', args=[str(self.id)])
 
-    def get_tags(self):
+    def get_tags(self) -> set:
         return {tag.tag_name for tag in self.tags.all()}
 
 

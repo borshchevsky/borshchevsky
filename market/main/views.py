@@ -1,12 +1,19 @@
+from typing import Tuple, Union, Iterable, Callable
+
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.core.cache import cache
 from django.core.mail import send_mail
+from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.forms.models import ModelForm, BaseModelForm
 from django.http import HttpResponseRedirect
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from django.views.generic.base import ContextMixin
 
 from market.settings import DEFAULT_GROUP_NAME
 from . import email_messages
@@ -16,7 +23,7 @@ from .tasks import send_novelty_task
 from .utils import send_sms
 
 
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     turn_on_block = True
     greeting = 'Hello'
     return render(request, 'index.html', {
@@ -29,14 +36,14 @@ class ProductListView(ListView):
     model = Product
     paginate_by = 10
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         queryset = super().get_queryset()
         tag = self.request.GET.get('tag')
         if tag:
             return queryset.filter(tags__tag_name=tag)
         return queryset
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, *, object_list: ContextMixin = None, **kwargs) -> dict:
         data = super().get_context_data()
         tag = self.request.GET.get('tag')
         data['tag'] = tag
@@ -46,7 +53,7 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
         page_id_views = f'{context["product"].id}_views'
@@ -66,16 +73,16 @@ class ProfileUpdate(UpdateView):
     def get_object(self, request):
         return request.user
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context['profile_form'] = ProfileFormSet(instance=self.get_object(kwargs['request']))
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         self.object = self.get_object(request)
         return self.render_to_response(self.get_context_data(request=request))
 
-    def form_valid_formset(self, form, formset):
+    def form_valid_formset(self, form: ModelForm, formset: ProfileFormSet) -> HttpResponseRedirect:
         if formset.is_valid():
             formset.save(commit=False)
             formset.save()
@@ -95,7 +102,7 @@ class ProfileUpdate(UpdateView):
         else:
             return self.form_invalid(form)
 
-    def _verify_number(self, request):
+    def _verify_number(self, request: HttpRequest) -> None:
         user = User.objects.get(username=request.user.username)
         profile = Profile.objects.get(user=user)
         phone_number = profile.phone_number
